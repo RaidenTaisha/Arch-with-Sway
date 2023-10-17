@@ -128,44 +128,6 @@ root@archiso ~ # mount /dev/sda1 /mnt/boot/efi
 root@archiso ~ # arch-chroot /mnt              # входим обратно в систему
 [root@archiso /]# refind-install               # устанавливаем загрузчик
 
-                                               # переходим в файл конфигурации refind (он очень большой)
-[root@archiso /]# nano /boot/efi/EFI/refind/refind.conf
-                                               # находим там абзац (воспользуйтесь поиском в nano)
-menuentry "Arch Linux" {
-    icon     /EFI/refind/icons/os_arch.png
-    volume   "Arch Linux"
-    loader   /boot/vmlinuz-linux
-    initrd   /boot/initramfs-linux.img
-    options  "root=PARTUUID=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX rw add_efi_memmap"
-    submenuentry "Boot using fallback initramfs" {
-        initrd /boot/initramfs-linux-fallback.img
-    }
-    submenuentry "Boot to terminal" {
-        add_options "systemd.unit=multi-user.target"
-    }
-    disabled
-}
-                                               # и меняем строчку options на следующий вариант
-menuentry "Arch Linux" {
-    icon     /EFI/refind/icons/os_arch.png
-    volume   "Arch Linux"
-    loader   /boot/vmlinuz-linux
-    initrd   /boot/initramfs-linux.img
-    options  "root=PARTUUID=/dev/sda3 rw add_efi_memmap"
-    submenuentry "Boot using fallback initramfs" {
-        initrd /boot/initramfs-linux-fallback.img
-    }
-    submenuentry "Boot to terminal" {
-        add_options "systemd.unit=multi-user.target"
-    }
-    disabled
-}
-
-                                               # переходим в ещё один файл конфигурации refind
-[root@archiso /]# nano /boot/refind-linux.conf # и удаляем все строчки кроме одной единственной
-             
-             "Boot with minimal options"    "ro root=UUID=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"
-
 [root@archiso /]# exit                         # выходим из системы, вы молодец!
 ```
 
